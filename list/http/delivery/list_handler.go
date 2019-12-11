@@ -32,7 +32,7 @@ func (h *ListHandler) Fetch(w http.ResponseWriter, r *http.Request, _ httprouter
 	l, err := h.lUsecase.Fetch()
 
 	if err != nil {
-		fmt.Println(err)
+		http.Error(w, err.Error(), 500)
 	}
 
 	_ = json.NewEncoder(w).Encode(&l)
@@ -50,7 +50,7 @@ func (h *ListHandler) GetByID(w http.ResponseWriter, r *http.Request, p httprout
 	l, err := h.lUsecase.GetByID(listID)
 
 	if err != nil {
-		fmt.Println("list by id not found")
+		http.Error(w, err.Error(), 500)
 	}
 
 	_ = json.NewEncoder(w).Encode(&l)
@@ -68,7 +68,7 @@ func (h *ListHandler) Create(w http.ResponseWriter, r *http.Request, _ httproute
 	err = h.lUsecase.Create(list)
 
 	if err != nil {
-		fmt.Println("Error => ", err)
+		http.Error(w, err.Error(), 500)
 	}
 
 	_ = json.NewEncoder(w).Encode(&list)
@@ -88,7 +88,7 @@ func (h *ListHandler) Delete(w http.ResponseWriter, r *http.Request, p httproute
 	err = h.lUsecase.Delete(listID)
 
 	if err != nil {
-		fmt.Println("Cant delete list")
+		http.Error(w, "Invalid list ID", 500)
 	}
 
 	_ = json.NewEncoder(w).Encode(&list)
